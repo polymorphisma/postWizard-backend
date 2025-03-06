@@ -24,6 +24,10 @@ class UserDao(BaseDao):
         statement = select(User).where(User.email == email)
         return await self.session.scalar(statement=statement)
 
+    async def get_by_username(self, username) -> User | None:
+        statement = select(User).where(User.username == username)
+        return await self.session.scalar(statement=statement)
+
     async def get_all(self) -> list[User]:
         statement = select(User).order_by(User.id)
         result = await self.session.execute(statement=statement)

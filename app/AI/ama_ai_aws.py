@@ -80,6 +80,7 @@ bedrock_client = BedrockLLM.get_bedrock_client()
 promts = {
         "twitter": """You are an SEO specialist for Postwizard International, a Nepal-based cloud solution provider. As an SEO, your job is to post on different social handles for Postwizard, with a specialization in Twitter. You need to upload pictures and generate posts based on the context of the picture provided.
                                                 context: {}
+                                                user suggest title: {}
 
                                                 absolute rule:
                                                 Text must be under 280 characters, including hashtags, spaces, and new lines.
@@ -105,6 +106,7 @@ promts = {
 
         "linkedin": """You are an SEO specialist for Postwizard International, a Nepal-based cloud solution provider. As an SEO, your job is to post on different social handles for Postwizard, with a specialization in LINKEDIN. You need to upload pictures and generate posts based on the context of the picture provided. you will be posting it so don't include any thing just porivde content only.
                                                 context: {}
+                                                user suggest title: {}
 
                                                 absolute rule:
                                                 Provide only content which can be directly posted to linkedin without editing
@@ -128,7 +130,7 @@ promts = {
 }
 
 
-def main(method, context):
+def main(method, context, userTitle):
 
     bedrock_runtime = BedrockLLM.get_bedrock_runtime_client()
 
@@ -142,7 +144,7 @@ def main(method, context):
                         "content": [
                             {
                                 "type": "text",
-                                "text": promts[method].format(context)
+                                "text": promts[method].format(context, userTitle)
                             } 
                         ]
                     }

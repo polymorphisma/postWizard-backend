@@ -10,5 +10,9 @@ router = APIRouter(tags=["A.I"], prefix="/ai")
 
 
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
-async def upload(session: AsyncSession = Depends(get_session), images: List[UploadFile] = File(...), context: str = Form(...), socialMedia: str = Form(...)):
-    return await AiService.upload(session, images, context, socialMedia)
+async def upload(session = None, images: List[UploadFile] = File(...), userTitle: str = Form(...), context: str = Form(...),  socialMedia: str = Form(...)):
+    return await AiService.upload(session, images, userTitle, context, socialMedia)
+
+@router.post("/schedule", status_code=status.HTTP_201_CREATED)
+async def schedule(session = None, images: List[UploadFile] = File(...), userTitle: str = Form(...), context: str = Form(...),  socialMedia: str = Form(...), scheduleDate: str = Form(...)):
+    return await AiService.schedule(session, images, userTitle, context, socialMedia, scheduleDate)

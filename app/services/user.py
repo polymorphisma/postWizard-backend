@@ -37,8 +37,8 @@ class UserService:
         )
 
     @staticmethod
-    async def authenticate_user(session: AsyncSession, email: str, password: str) -> UserModel | bool:
-        _user = await user.UserDao(session).get_by_email(email)
+    async def authenticate_user(session: AsyncSession, username: str, password: str) -> UserModel | bool:
+        _user = await user.UserDao(session).get_by_username(username)
         if not _user or not UtilsService.verify_password(password, _user.password):
             return False
         return _user
@@ -53,7 +53,7 @@ class UserService:
         body = await request.json()
         _user = await UserService.authenticate_user(session, body.get("username"), body.get("password"))
         if not _user:
-            raise JSONResponse(
+            return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={"message": "Incorrect email or password", "success": False},
             )

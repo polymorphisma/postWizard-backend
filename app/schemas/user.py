@@ -3,8 +3,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
 
 class UserBase(BaseModel):
     email: EmailStr
-    first_name: str | None
-    last_name: str | None
+    username: str | None
     model_config = ConfigDict(from_attributes=True)
 
 

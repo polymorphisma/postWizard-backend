@@ -4,6 +4,7 @@ from app.Social_media_handler.linkedin import Linkedin
 # from app.AI.ama_ai_google import main as ai_text_generator
 from app.AI.ama_ai_aws import main as ai_text_generator
 
+
 twitter_obj = Twitter()
 linkedin_obj = Linkedin()
 
@@ -15,18 +16,14 @@ class Sm_handler:
             "linkedin": linkedin_obj.entry_point
         }
 
-    def entry_point(self, method: str | list, image_path: list, context: str):
-        print('hi')
+    def entry_point(self, method: str | list, image_path: list, context: str, userTitle: str):
         if isinstance(method, str):
             method = [method]
-        print('hi')
 
         return_value = []
-        print('hi')
-
         for meth in method:
             while True:
-                text = ai_text_generator(meth, context)
+                text = ai_text_generator(meth, context, userTitle)
                 print(meth, text)
                 if meth != 'twitter':
                     break

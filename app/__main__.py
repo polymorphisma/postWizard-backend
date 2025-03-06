@@ -2,6 +2,9 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from app.scheduler import start_scheduler
+
 
 import uvicorn
 from app.run_migration import run_migration
@@ -9,6 +12,12 @@ from app.run_migration import run_migration
 from app.routers.api_router import api_router
 
 app = FastAPI(title="So Fast Project", version="0.1.0")
+
+# Start the scheduler once during the startup of the app
+@app.on_event("startup")
+async def startup_event():
+    # Start the scheduler only once when the application starts
+    start_scheduler()
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,6 +39,21 @@ async def index(request: Request):
     context = {"request": request}
     return templates.TemplateResponse("home.html", context=context)
 
+@app.get("/login")
+async def login(request: Request):
+    context = {"request": request}
+    return templates.TemplateResponse("login.html", context=context)
+
+@app.get("/register")
+async def register(request: Request):
+    context = {"request": request}
+    return templates.TemplateResponse("register.html", context=context)
+
+@app.get("/setting")
+async def setting(request: Request):
+    context = {"request": request}
+    return templates.TemplateResponse("setting.html", context=context)
+
 app.include_router(api_router)
 
 # make https redirect work
@@ -38,8 +62,8 @@ if __name__ == "__main__":
         "app.__main__:app",  # Changed from "__main__:app" to "app.__main__:app"
         loop="asyncio",
         host="0.0.0.0",
-        port=3000,
-        # reload=True,
+        port=8000,
+        reload=True,
         workers=5,
         env_file="../.env",
     )

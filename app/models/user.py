@@ -10,8 +10,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     email: Mapped[str] = mapped_column(String(150), unique=True, index=True, nullable=False)
     password: Mapped[str]
-    first_name: Mapped[str100 | None]
-    last_name: Mapped[str100 | None]
+    username: Mapped[str100 | None]
 
     # Relationship to 'Upload' table with cascade option
     uploads: Mapped[list["Upload"]] = relationship(
